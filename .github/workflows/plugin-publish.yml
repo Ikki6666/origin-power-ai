@@ -1,0 +1,77 @@
+# Auto-package the plugin and open a PR to langgenius/dify-plugins on every push to main.
+#
+# Setup (one-time): add a repository secret `PLUGIN_ACTION` — a GitHub PAT
+# (classic, `repo` scope) that can push branches to the fork `Ikki6666/dify-plugins`.
+
+name: Publish plugin to Dify Marketplace (auto PR)
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Dify Plugin CLI
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          cd "$RUNNER_TEMP/bin"
+          wget -q https://github.com/langgenius/dify-plugin-daemon/releases/latest/download/dify-plugin-linux-amd64
+          chmod +x dify-plugin-linux-amd64
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      - name: Read plugin metadata from manifest
+        id: meta
+        run: |
+          echo "plugin_name=$(grep '^name:' manifest.yaml | cut -d' ' -f2 | tr -d '"')" >> "$GITHUB_OUTPUT"
+          echo "version=$(grep '^version:' manifest.yaml | cut -d' ' -f2 | tr -d '"')" >> "$GITHUB_OUTPUT"
+          echo "author=$(grep '^author:' manifest.yaml | cut -d' ' -f2 | tr -d '"')" >> "$GITHUB_OUTPUT"
+
+      - name: Package plugin
+        run: |
+          PACKAGE_NAME="${{ steps.meta.outputs.plugin_name }}-${{ steps.meta.outputs.version }}.difypkg"
+          dify plugin package . -o "$PACKAGE_NAME"
+
+      - name: Checkout marketplace fork
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.meta.outputs.author }}/dify-plugins
+          token: ${{ secrets.PLUGIN_ACTION }}
+          path: dify-plugins
+          fetch-depth: 1
+
+      - name: Commit package to fork
+        run: |
+          PACKAGE_NAME="${{ steps.meta.outputs.plugin_name }}-${{ steps.meta.outputs.version }}.difypkg"
+          cd dify-plugins
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main --depth 1
+          git checkout main && git pull origin main --depth 1
+          mkdir -p "${{ steps.meta.outputs.author }}/${{ steps.meta.outputs.plugin_name }}"
+          cp "../$PACKAGE_NAME" "${{ steps.meta.outputs.author }}/${{ steps.meta.outputs.plugin_name }}/"
+          BRANCH="bump-${{ steps.meta.outputs.plugin_name }}-plugin-${{ steps.meta.outputs.version }}"
+          git checkout -b "$BRANCH"
+          git add .
+          git commit -m "bump ${{ steps.meta.outputs.plugin_name }} plugin to version ${{ steps.meta.outputs.version }}" || echo "no changes"
+          git push -u origin "$BRANCH" --force
+
+      - name: Create PR to langgenius/dify-plugins
+        env:
+          GH_TOKEN: ${{ secrets.PLUGIN_ACTION }}
+        run: |
+          VERSION="${{ steps.meta.outputs.version }}"
+          BRANCH="bump-${{ steps.meta.outputs.plugin_name }}-plugin-${{ steps.meta.outputs.version }}"
+          cd dify-plugins
+          gh pr create \
+            --repo langgenius/dify-plugins \
+            --head "${{ steps.meta.outputs.author }}:$BRANCH" \
+            --base main \
+            --title "bump ${{ steps.meta.outputs.plugin_name }} plugin to version $VERSION" \
+            --body "bump ${{ steps.meta.outputs.plugin_name }} plugin package to version $VERSION" \
+            || echo "PR already exists or nothing to submit."
