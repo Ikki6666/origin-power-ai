@@ -1,0 +1,262 @@
+provider: origin_power_ai
+label:
+  en_US: Origin Power AI
+  zh_Hans: 源力AI开放平台
+description:
+  en_US: >
+    Unified OpenAI-compatible gateway of the Origin Power AI platform,
+    aggregating GLM and other mainstream models behind one API key.
+  zh_Hans: >
+    源力AI开放平台的统一 OpenAI 兼容网关，一枚 API Key 即可调用
+    GLM 等聚合模型，按 Token 计量计费。
+icon_small:
+  en_US: icon.svg
+icon_large:
+  en_US: icon.svg
+background: "#EFF6FF"
+help:
+  title:
+    en_US: Get your API Key from the Origin Power AI Console
+    zh_Hans: 在源力AI开放平台控制台创建 API Key
+  url:
+    en_US: https://origin-power-ai.mintlifysite.com/quickstart
+    zh_Hans: https://origin-power-ai.mintlifysite.com/quickstart
+supported_model_types:
+  - llm
+configurate_methods:
+  - predefined-model
+  - customizable-model
+provider_credential_schema:
+  credential_form_schemas:
+    - variable: endpoint_url
+      label:
+        en_US: API Base URL
+        zh_Hans: API Base URL
+      type: text-input
+      required: true
+      placeholder:
+        en_US: Your gateway root, e.g. https://your-gateway.example.com/v1
+        zh_Hans: 网关根地址，例如 https://your-gateway.example.com/v1
+    - variable: api_key
+      label:
+        en_US: API Key
+        zh_Hans: API Key
+      type: secret-input
+      required: true
+      placeholder:
+        en_US: Enter your API Key
+        zh_Hans: 在此输入您的 API Key
+model_credential_schema:
+  model:
+    label:
+      en_US: Model Name
+      zh_Hans: 模型名称
+    placeholder:
+      en_US: Enter the model ID exactly as served by the gateway, e.g. glm-5.3
+      zh_Hans: 输入网关提供的准确 model ID，例如 glm-5.3
+  credential_form_schemas:
+    - variable: endpoint_url
+      label:
+        en_US: API Base URL
+        zh_Hans: API Base URL
+      type: text-input
+      required: true
+      placeholder:
+        en_US: Your gateway root, e.g. https://your-gateway.example.com/v1
+        zh_Hans: 网关根地址，例如 https://your-gateway.example.com/v1
+    - variable: api_key
+      label:
+        en_US: API Key
+        zh_Hans: API Key
+      type: secret-input
+      required: false
+      placeholder:
+        en_US: Enter the API Key authorized for this model
+        zh_Hans: 在此输入该模型可用的 API Key
+    - variable: mode
+      show_on:
+        - variable: __model_type
+          value: llm
+      label:
+        en_US: Completion mode
+        zh_Hans: 对话类型
+      type: select
+      required: false
+      default: chat
+      options:
+        - value: completion
+          label:
+            en_US: Completion
+            zh_Hans: 补全
+        - value: chat
+          label:
+            en_US: Chat
+            zh_Hans: 对话
+    - variable: context_size
+      label:
+        en_US: Model context size
+        zh_Hans: 模型上下文长度
+      required: true
+      show_on:
+        - variable: __model_type
+          value: llm
+      type: text-input
+      default: "32768"
+      placeholder:
+        en_US: Enter your Model context size
+        zh_Hans: 在此输入您的模型上下文长度
+    - variable: max_tokens_to_sample
+      label:
+        en_US: Upper bound for max tokens
+        zh_Hans: 最大 token 上限
+      show_on:
+        - variable: __model_type
+          value: llm
+      default: "4096"
+      type: text-input
+    - variable: function_calling_type
+      show_on:
+        - variable: __model_type
+          value: llm
+      label:
+        en_US: Function Call Type
+        zh_Hans: 函数调用类型
+      type: select
+      required: false
+      default: tool_call
+      options:
+        - value: tool_call
+          label:
+            en_US: Tool Call
+            zh_Hans: 工具调用
+        - value: function_call
+          label:
+            en_US: Function Call
+            zh_Hans: 函数调用
+        - value: no_call
+          label:
+            en_US: Not Support
+            zh_Hans: 不支持
+    - variable: stream_function_calling
+      show_on:
+        - variable: __model_type
+          value: llm
+      label:
+        en_US: Stream function calling
+        zh_Hans: 流式函数调用
+      type: select
+      required: false
+      default: supported
+      options:
+        - value: supported
+          label:
+            en_US: Support
+            zh_Hans: 支持
+        - value: not_supported
+          label:
+            en_US: Not Support
+            zh_Hans: 不支持
+    - variable: vision_support
+      show_on:
+        - variable: __model_type
+          value: llm
+      label:
+        en_US: Vision Support
+        zh_Hans: 视觉支持
+      type: select
+      required: false
+      default: no_support
+      options:
+        - value: support
+          label:
+            en_US: Support
+            zh_Hans: 支持
+        - value: no_support
+          label:
+            en_US: Not Support
+            zh_Hans: 不支持
+    - variable: token_param_name
+      show_on:
+        - variable: __model_type
+          value: llm
+      label:
+        en_US: Token parameter name
+        zh_Hans: token 参数名
+      type: select
+      required: false
+      default: auto
+      options:
+        - value: auto
+          label:
+            en_US: Auto (detect by model)
+            zh_Hans: 自动（按模型判断）
+        - value: max_tokens
+          label:
+            en_US: Use max_tokens
+            zh_Hans: 使用 max_tokens
+        - value: max_completion_tokens
+          label:
+            en_US: Use max_completion_tokens
+            zh_Hans: 使用 max_completion_tokens
+    - variable: user_identity_support
+      show_on:
+        - variable: __model_type
+          value: llm
+      label:
+        en_US: User Identity Support
+        zh_Hans: 用户标识支持
+      type: select
+      required: false
+      default: no_support
+      help:
+        en_US: >
+          Whether the endpoint accepts the optional top-level user parameter.
+          Choose Not Support to omit it from the request body.
+        zh_Hans: >
+          端点是否接受可选的顶层 user 参数。若网关不接受该参数，请选择「不支持」。
+      options:
+        - value: support
+          label:
+            en_US: Support
+            zh_Hans: 支持
+        - value: no_support
+          label:
+            en_US: Not Support
+            zh_Hans: 不支持
+    - variable: stream_include_usage
+      show_on:
+        - variable: __model_type
+          value: llm
+      label:
+        en_US: Include Usage in Stream
+        zh_Hans: 流式中包含用量
+      type: select
+      required: false
+      default: enabled
+      help:
+        en_US: >
+          Whether to send `stream_options: {include_usage: true}` so the endpoint
+          returns token counts in the final stream chunk. Choose Disabled only
+          if the endpoint rejects the field.
+        zh_Hans: >
+          是否发送 stream_options.include_usage，让端点在流式最后一片中返回
+          token 用量。仅在端点拒绝该字段时选择「禁用」。
+      options:
+        - value: enabled
+          label:
+            en_US: Enabled
+            zh_Hans: 启用
+        - value: disabled
+          label:
+            en_US: Disabled
+            zh_Hans: 禁用
+extra:
+  python:
+    provider_source: provider/origin_power_ai.py
+    model_sources:
+      - "models/llm/llm.py"
+models:
+  llm:
+    predefined:
+      - "models/llm/*.yaml"
+    position: "models/llm/_position.yaml"
