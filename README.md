@@ -1,4 +1,4 @@
-# Origin Power AI (源力AI开放平台)
+# Origin Power AI
 
 [中文说明](readme/README_zh_Hans.md)
 
