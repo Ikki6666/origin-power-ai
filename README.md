@@ -1,6 +1,6 @@
 # Origin Power AI
 
-[中文说明](readme/README_zh_Hans.md)
+[Chinese README](readme/README_zh_Hans.md)
 
 A [Dify](https://dify.ai) model provider plugin for the **Origin Power AI** platform — a unified OpenAI-compatible gateway that aggregates GLM, MiniMax and other mainstream models behind a single API key.
 
@@ -20,17 +20,18 @@ A [Dify](https://dify.ai) model provider plugin for the **Origin Power AI** plat
 
 ### Predefined models
 
-| Model ID | Context | Max output | Input / Output (CNY per 1M tokens)¹ | Vision | Tool call |
-|---|---|---|---|---|---|
-| `glm-5.3-flash` | 1.25M | 131K | ¥0.40 / ¥1.40 | ✅ | ✅ |
-| `glm-5-turbo` | 200K | 131K | ¥7.00 / ¥26.00 | – | ✅ |
-| `glm-4.7` | 200K | 131K | ¥4.00 / ¥16.00 | – | ✅ |
-| `glm-5.3` | 1M | 131K | ¥8.00 / ¥28.00 | – | ✅ |
-| `glm-5.2` | 1M | 262K | ¥8.00 / ¥28.00 | – | ✅ |
-| `minimax-h3` | approx. 131K² | 131K | see platform pricing | ✅ | – |
+| Model ID | Context¹ | Max output | Input / Output (CNY per 1M tokens)² | Vision | Tool call | Thinking |
+|---|---|---|---|---|---|---|
+| `glm-5.3-flash` | 1,048,576 | 131K | ¥0.40 / ¥1.40 | ✅ (+video) | ✅ | always on (low/high/max) |
+| `glm-5-turbo` | 202,752 | 131K | ¥7.00 / ¥26.00 | – | ✅ | optional |
+| `glm-4.7` | 202,752 | 131K | ¥4.00 / ¥16.00 | – | ✅ | optional |
+| `glm-5.3` | 1,048,576 | 131K | ¥8.00 / ¥28.00 | – | ✅ | always on (low/high/max) |
+| `glm-5.2` | 262,144 | 262K | ¥8.00 / ¥28.00 | – | ✅ | optional (high/xhigh) |
 
-¹ List prices at the time of writing; billing always follows the `usage` field returned by the gateway. Cached-input discounts are not reflected in Dify's price display.
-² Specs for `minimax-h3` are approximate; add it with precise parameters via **Add Model** (customizable model) if your plan differs.
+¹ Effective serving limits (`top_provider.context_length` from the platform catalog), not the advertised training-context figures.
+² List prices at the time of writing; billing always follows the `usage` field returned by the gateway. Cached-input discounts are not reflected in Dify's price display.
+
+All five models expose `response_format` (JSON object mode); GLM-4.7 / 5.2 / 5.3 / Flash additionally support Dify's structured-output workflows, and reasoning models expose a `reasoning_effort` parameter to trade thinking depth for token cost.
 
 ### Custom models
 

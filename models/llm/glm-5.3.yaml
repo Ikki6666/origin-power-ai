@@ -8,20 +8,103 @@ features:
   - tool-call
   - multi-tool-call
   - stream-tool-call
+  - structured-output
 model_properties:
   mode: chat
-  context_size: 1000000
+  context_size: 1048576
 parameter_rules:
   - name: temperature
-    use_template: temperature
-  - name: top_p
-    use_template: top_p
-  - name: max_tokens
-    use_template: max_tokens
+    label:
+      en_US: Temperature
+      zh_Hans: 温度
+    type: float
     required: false
-    default: 4096
-    min: 1
+    help:
+      en_US: Temperature
+      zh_Hans: 温度
+    default: 1.0
+    max: 2.0
+    min: 0.0
+  - name: top_p
+    label:
+      en_US: Top P
+      zh_Hans: Top P
+    type: float
+    required: false
+    help:
+      en_US: Top P
+      zh_Hans: Top P
+    default: 0.95
+    max: 1.0
+    min: 0.0
+  - name: top_k
+    label:
+      en_US: Top K
+      zh_Hans: Top K
+    type: int
+    required: false
+    help:
+      en_US: Top K
+      zh_Hans: Top K
+    max: 128
+    min: 0
+  - name: max_tokens
+    label:
+      en_US: Max tokens
+      zh_Hans: 最大回复 token 数
+    type: int
+    required: false
+    help:
+      en_US: Maximum tokens the model may generate. Thinking models spend reasoning tokens from this budget too.
+      zh_Hans: 模型最多可生成的 token 数。思考模型同样从该预算消耗推理 token，过小会导致正文为空。
+    default: 8192
     max: 131072
+    min: 1
+  - name: seed
+    label:
+      en_US: Seed
+      zh_Hans: 随机种子
+    type: int
+    required: false
+    help:
+      en_US: Seed for deterministic sampling
+      zh_Hans: 固定随机种子以获得可复现输出
+  - name: stop
+    label:
+      en_US: Stop sequences
+      zh_Hans: 停止序列
+    type: tag-input
+    required: false
+    help:
+      en_US: Up to 4 sequences where generation stops
+      zh_Hans: 最多 4 个停止序列
+  - name: response_format
+    label:
+      en_US: Response format
+      zh_Hans: 回复格式
+    type: string
+    required: false
+    help:
+      en_US: Specify the format the model must output: plain text or JSON object
+      zh_Hans: 指定模型必须输出的格式：纯文本或 JSON 对象
+    default: text
+    options:
+      - text
+      - json_object
+  - name: reasoning_effort
+    label:
+      en_US: Reasoning effort
+      zh_Hans: 推理力度
+    type: string
+    required: false
+    help:
+      en_US: Thinking depth for reasoning models. Lower saves tokens; GLM-5.3/Flash cannot disable thinking.
+      zh_Hans: 推理模型的思考深度。档位越低越省 token；GLM-5.3/Flash 思考不可关闭，只能调档。
+    default: max
+    options:
+      - low
+      - high
+      - max
 pricing:
   input: '8.00'
   output: '28.00'
