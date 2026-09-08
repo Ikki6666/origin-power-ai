@@ -1,7 +1,9 @@
-version: 0.0.4
+version: 0.0.5
 type: plugin
 author: "ikki6666"
 name: "origin_power_ai"
+repo: "https://github.com/Ikki6666/origin-power-ai"
+contact: "huangyihui@holiai.com"
 label:
   en_US: "Origin Power AI"
   zh_Hans: "源力AI开放平台"
@@ -26,6 +28,7 @@ plugins:
     - "provider/origin_power_ai.yaml"
 meta:
   version: 0.0.1
+  minimum_dify_version: "1.0.0"
   arch:
     - "amd64"
     - "arm64"
