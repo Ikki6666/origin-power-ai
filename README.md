@@ -8,7 +8,7 @@ A [Dify](https://dify.ai) model provider plugin for the **Origin Power AI** plat
 
 **Marketplace**: search `origin-power-ai` (after the plugin is listed).
 
-**GitHub**: Dify → Plugins → Install via GitHub → `origin-power-ai/origin-power-ai`, or download the `.difypkg` from [Releases](https://github.com/origin-power-ai/origin-power-ai/releases) and install via *Local Package File*.
+**GitHub**: Dify → Plugins → Install via GitHub → `origin-power-ai/dify-plugin-origin-power-ai`, or download the `.difypkg` from [Releases](https://github.com/origin-power-ai/dify-plugin-origin-power-ai/releases) and install via *Local Package File*.
 
 **Local file** (for internal distribution): hand the `.difypkg` to your users and install it from the Plugins page.
 

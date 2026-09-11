@@ -2,7 +2,7 @@ version: 0.0.5
 type: plugin
 author: "ikki6666"
 name: "origin_power_ai"
-repo: "https://github.com/origin-power-ai/origin-power-ai"
+repo: "https://github.com/origin-power-ai/dify-plugin-origin-power-ai"
 contact: "huangyihui@holiai.com"
 label:
   en_US: "Origin Power AI"

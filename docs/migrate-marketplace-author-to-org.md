@@ -1,6 +1,6 @@
 # 执行清单：把插件市场身份迁到公司组织（方案 B）
 
-> 背景：插件 v0.0.5 已以 `ikki6666/origin_power_ai` 上架。源码仓库已迁至 `origin-power-ai/origin-power-ai`（方案 A 已完成）。
+> 背景：插件 v0.0.5 已以 `ikki6666/origin_power_ai` 上架。源码仓库已迁至 `origin-power-ai/dify-plugin-origin-power-ai`（方案 A 已完成）。
 > 本清单用于把市场身份（Plugin ID 前缀）也换成公司组织 `origin-power-ai`。
 > 关键机制：市场身份 = manifest 的 `author` + `name`，与 GitHub 仓库位置无关；`author` 必须与推送 PR 的 fork 所有者一致（安装时校验 `plugin_unique_identifier`）。
 
@@ -17,11 +17,11 @@
 - [ ] 确认 fork 名称 `origin-power-ai/dify-plugins` 可访问
 - [ ] 为发布用的 PAT 确认权限：能向该 org fork 推送分支并创建 PR（classic PAT 需 `repo`；org 若启用 SSO 需授权）
 
-## 2. 更新源码（`origin-power-ai/origin-power-ai`）
+## 2. 更新源码（`origin-power-ai/dify-plugin-origin-power-ai`）
 
 - [ ] `manifest.yaml`：`author: "origin-power-ai"`（当前为 `ikki6666`）
 - [ ] `manifest.yaml`：`version:` bump 到约定版本（如 `1.0.0`）
-- [ ] 确认 `repo:` 已是 `https://github.com/origin-power-ai/origin-power-ai`
+- [ ] 确认 `repo:` 已是 `https://github.com/origin-power-ai/dify-plugin-origin-power-ai`
 - [ ] 若 provider YAML/代码里出现 author 字段，一并改为 `origin-power-ai`
 - [ ] 重新打包：`dify plugin package ./ -o origin_power_ai-<version>.difypkg`
 - [ ] 本地校验包内 manifest：author/version/repo 正确
