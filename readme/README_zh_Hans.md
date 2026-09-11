@@ -7,7 +7,7 @@ Dify 模型供应商插件，接入**源力AI开放平台**——统一 OpenAI �
 ## 安装
 
 - **插件市场**：上架后搜索 `origin-power-ai`。
-- **GitHub**：Dify → 插件 → 通过 GitHub 安装 → `Ikki6666/origin-power-ai`；或在 [Releases](https://github.com/Ikki6666/origin-power-ai/releases) 下载 `.difypkg` 后从「本地文件」安装。
+- **GitHub**：Dify → 插件 → 通过 GitHub 安装 → `origin-power-ai/origin-power-ai`；或在 [Releases](https://github.com/origin-power-ai/origin-power-ai/releases) 下载 `.difypkg` 后从「本地文件」安装。
 - **内部分发**：直接把 `.difypkg` 文件发给同事安装。
 
 ## 配置

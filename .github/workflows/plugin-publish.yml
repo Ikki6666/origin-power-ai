@@ -1,13 +1,15 @@
-# Auto-package the plugin and open a PR to langgenius/dify-plugins on every push to main.
+# Package the plugin and open a PR to langgenius/dify-plugins for the version in manifest.yaml.
+#
+# Run manually (Actions → this workflow → Run workflow) AFTER bumping the version
+# in manifest.yaml: the Marketplace keys a release by its version, so running it
+# without a version bump would only try to re-submit an existing release.
 #
 # Setup (one-time): add a repository secret `PLUGIN_ACTION` — a GitHub PAT
-# (classic, `repo` scope) that can push branches to the fork `Ikki6666/dify-plugins`.
+# (classic, `repo` scope) that can push branches to the fork `ikki6666/dify-plugins`.
 
 name: Publish plugin to Dify Marketplace (auto PR)
 
 on:
-  push:
-    branches: [main, master]
   workflow_dispatch:
 
 jobs:
